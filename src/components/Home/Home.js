@@ -22,7 +22,6 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      //articles: [],
       movies: [],
       show: false
     };
@@ -67,14 +66,13 @@ class Home extends Component {
               {movies.map((movie, i) => (
                 <Fade key={movie.imdb}>
                   <div className="Card">
-                    <button onClick={() => this.animate(i)}>Click</button>
-                    <Card>
+                    <Card style={{backgroundColor: "#000"}}>
                       <Link to={`/movie/${movie.id}`} className="Card-link">
                         <div ref={img => (this.refImages[i] = img)}>
                           <CardMedia
                             className="Card-media"
                             style={{ backgroundImage: `url(${movie.poster})` }}
-                            overlay={<CardTitle title={movie.title} />}
+                            overlay={<CardTitle title={movie.title} style={{background: "rgba(0, 0, 0, 0.8)"}} />}
                             overlayContentStyle={{ background: "transparent" }}
                             overlayStyle={{ color: "#fff" }}
                           />
