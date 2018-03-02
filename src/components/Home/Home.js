@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import {
   Card,
-  CardHeader,
   CardMedia,
   CardTitle,
   CardText
 } from "material-ui/Card";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { getArticles, searchMovies, getMovie } from "../../api/api";
+import { searchMovies, getMovie } from "../../api/api";
 import { Link } from "react-router-dom";
 import { TweenMax } from "gsap";
 import "./Home.css";
@@ -23,7 +22,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      articles: [],
+      //articles: [],
       movies: [],
       show: false
     };
@@ -33,14 +32,14 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    const articles = await getArticles();
+    //const articles = await getArticles();
 
     //const movies = await searchMovies("matrix");
     const movies = await searchMovies({
-      terms: "matrix", // Required string
+      terms: "star wars", // Required string
       //year: 1999, // optional number
-      page: 1 // optional number (1 - 100)
-      //type: "movie" // optional string ("series" || "movie" || "episode")
+      page: 1, // optional number (1 - 100)
+      type: "movie" // optional string ("series" || "movie" || "episode")
     });
     console.log("DEBUG", movies);
     const firstFullDataMovie =
@@ -48,8 +47,8 @@ class Home extends Component {
     console.log(firstFullDataMovie);
 
     this.setState({
-      articles,
-      //movies,
+        //articles,
+      movies,
       show: true
     });
   }
@@ -59,33 +58,28 @@ class Home extends Component {
   }
 
   render() {
-    const articles = this.state.articles;
+    const movies = this.state.movies;
     return (
       <div className="Home">
         <div className="Home-intro">
           <div className="container">
             <TransitionGroup className="todo-list">
-              {articles.map((article, i) => (
-                <Fade key={article.id}>
+              {movies.map((movie, i) => (
+                <Fade key={movie.imdb}>
                   <div className="Card">
                     <button onClick={() => this.animate(i)}>Click</button>
                     <Card>
-                      <Link to={`/article/${article.id}`} className="Card-link">
-                        <CardHeader
-                          title="Bob"
-                          subtitle="Web dev"
-                          avatar="https://cdn.drawception.com/images/avatars/569903-A55.jpg"
-                        />
+                      <Link to={`/movie/${movie.id}`} className="Card-link">
                         <div ref={img => (this.refImages[i] = img)}>
                           <CardMedia
                             className="Card-media"
-                            style={{ backgroundImage: `url(${article.img})` }}
-                            overlay={<CardTitle title={article.title} />}
+                            style={{ backgroundImage: `url(${movie.poster})` }}
+                            overlay={<CardTitle title={movie.title} />}
                             overlayContentStyle={{ background: "transparent" }}
                             overlayStyle={{ color: "#fff" }}
                           />
                         </div>
-                        <CardText>{article.excerpt}</CardText>
+                        <CardText>{movie.excerpt}</CardText>
                       </Link>
                     </Card>
                   </div>
